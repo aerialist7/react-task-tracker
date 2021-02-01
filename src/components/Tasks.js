@@ -8,7 +8,7 @@ const Tasks = ({tasks}) =>
     }</>
 
 Tasks.propTypes = {
-    title: PropTypes.array,
+    tasks: PropTypes.array,
 }
 
 export default Tasks
