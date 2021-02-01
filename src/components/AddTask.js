@@ -33,6 +33,7 @@ const AddTask = ({onAdd}) => {
                 onChange={e => setText(e.target.value)}
             />
         </div>
+
         <div className="form-control">
             <label>Day & Time</label>
             <input
@@ -42,6 +43,7 @@ const AddTask = ({onAdd}) => {
                 onChange={e => setDay(e.target.value)}
             />
         </div>
+
         <div className="form-control form-control-check">
             <label>Set Reminder</label>
             <input
@@ -51,7 +53,12 @@ const AddTask = ({onAdd}) => {
                 onChange={e => setReminder(e.currentTarget.checked)}
             />
         </div>
-        <input className="btn btn-block" type="submit" value="Save Task"/>
+
+        <input
+            className="btn btn-block"
+            type="submit"
+            value="Save Task"
+        />
     </form>
 }
 

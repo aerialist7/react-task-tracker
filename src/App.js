@@ -1,7 +1,10 @@
 import {useEffect, useState} from "react"
 import Header from "./components/Header"
-import Tasks from "./components/Tasks"
+import Footer from "./components/Footer"
+import {BrowserRouter, Route} from "react-router-dom"
+import About from "./components/About"
 import AddTask from "./components/AddTask"
+import Tasks from "./components/Tasks"
 
 const App = () => {
     const [showAddTask, setShowAddTask] = useState(false)
@@ -50,23 +53,38 @@ const App = () => {
             })
     }
 
-    return <div className="container">
-        <Header
-            onAdd={() => setShowAddTask(!showAddTask)}
-            showAdd={showAddTask}
-        />
-        {showAddTask && <AddTask onAdd={addTask}/>}
-        {
-            tasks.length > 0
-                ? <Tasks
-                    tasks={tasks}
-                    onDelete={deleteTask}
-                    onToggle={toggleReminder}
-                />
-                : "No Tasks to Show"
-        }
-
-    </div>
+    return <BrowserRouter>
+        <div className="container">
+            <Header
+                onAdd={() => setShowAddTask(!showAddTask)}
+                showAdd={showAddTask}
+            />
+            <Route
+                path="/"
+                exact
+                render={() =>
+                    <>
+                        {
+                            showAddTask && <AddTask onAdd={addTask}/>
+                        }
+                        {
+                            tasks.length > 0
+                                ? <Tasks
+                                    tasks={tasks}
+                                    onDelete={deleteTask}
+                                    onToggle={toggleReminder}
+                                />
+                                : "No Tasks to Show"
+                        }
+                    </>
+                }/>
+            <Route
+                path="/about"
+                component={About}
+            />
+            <Footer/>
+        </div>
+    </BrowserRouter>
 }
 
 export default App
