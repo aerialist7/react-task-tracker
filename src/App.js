@@ -1,10 +1,11 @@
+import Header from "./Header"
+
 function App() {
     const name = "Alex"
 
     return (
         <div className="container">
-            <h1>Hello from React!</h1>
-            <h2>Hello, {name} :)</h2>
+            <Header title={`Hello from react, ${name}!`}/>
         </div>
     )
 }
