@@ -11,28 +11,43 @@ const App = () => {
     useEffect(
         () => fetch("http://localhost:5000/tasks")
             .then(value => value.json())
-            .then(value => setTasks(value)),
+            .then(tasks => setTasks(tasks)),
         []
     )
 
-    const addTask = (task) => {
-        const id = Math.floor(Math.random() * 10000) + 1
-        tasks.push({id, ...task})
-        setTasks([...tasks])
+    const addTask = task => fetch("http://localhost:5000/tasks", {
+        method: "POST",
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify(task)
+    })
+        .then(value => value.json())
+        .then(task => setTasks([...tasks, task]))
+
+    const deleteTask = id => {
+        fetch(`http://localhost:5000/tasks/${id}`, {
+            method: "DELETE"
+        }).then(() => setTasks(tasks.filter(task => task.id !== id)))
     }
 
-    const deleteTask = (id) => {
-        setTasks(tasks.filter(task => task.id !== id))
-    }
-
-    const toggleReminder = (id) => {
-        setTasks(
-            tasks.map(task =>
-                task.id === id
-                    ? {...task, reminder: !task.reminder}
-                    : task
-            )
-        )
+    const toggleReminder = id => {
+        fetch(`http://localhost:5000/tasks/${id}`)
+            .then(value => value.json())
+            .then(taskToToggle => ({...taskToToggle, reminder: !taskToToggle.reminder}))
+            .then(updatedTask => {
+                fetch(`http://localhost:5000/tasks/${id}`, {
+                    method: "PUT",
+                    headers: {"Content-type": "application/json"},
+                    body: JSON.stringify(updatedTask)
+                })
+                    .then(value => value.json())
+                    .then(value => setTasks(
+                        tasks.map(task =>
+                            task.id === id
+                                ? {...task, reminder: value.reminder}
+                                : task
+                        )
+                    ))
+            })
     }
 
     return <div className="container">
